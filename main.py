@@ -1,12 +1,15 @@
-from decoding.decode import decode_pyzbar
-from localization.localize import yolov7_method
-from utils import crop_helper
+from decoding.decode import DecodePyzbar
+from localization.localize import LocalizeYolo
 
 input_img = "dataset/PXL_20230826_081352782.jpg"
-det_path = "localization/onnx_yolov7/yolov7-stickers.onnx"
+det_path = "path to yolov7-stickers.onnx"
 
-bounding_boxes = yolov7_method(input_img, det_path)
-decode_pyzbar(input_img, bounding_boxes)
+decoder = DecodePyzbar()
+find_barcodes = LocalizeYolo
+
+bounding_boxes = find_barcodes.yolov7_method(input_img, det_path)
+decoder.decode_p(input_img, bounding_boxes)
+
 
 # save_dir = "/Users/kseniia/Desktop/newtest"
 # crop_helper(save_dir, input_img, bounding_boxes)
