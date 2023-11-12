@@ -1,6 +1,6 @@
+from abc import ABC, abstractmethod
 from pyzbar.pyzbar import decode
 from utils import crop_img
-from abc import ABC, abstractmethod
 
 class DecodeInterface(ABC):
     @abstractmethod

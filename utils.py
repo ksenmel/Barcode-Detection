@@ -1,6 +1,6 @@
 import cv2
-from boundingbox.BoundingBox import BoundingBox
 import os
+from boundingbox.BoundingBox import BoundingBox
 
 
 def read_img(input_dir: str):
@@ -13,8 +13,6 @@ def crop_img(input_dir: str, rect: BoundingBox):
     cropped_image = img[rect.y:rect.y + rect.height, rect.x:rect.x + rect.width]
     return cropped_image
 
-
-# def helper
 
 def crop_helper(save_dir: str, input_dir: str, boundng_boxes):
     for i in boundng_boxes:

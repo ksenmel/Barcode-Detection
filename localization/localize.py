@@ -4,8 +4,6 @@ import numpy as np
 from localization.onnx_yolov7 import OnnxDetector
 from boundingbox.BoundingBox import BoundingBox
 
-from pyzbar.pyzbar import decode
-from utils import crop_img
 from abc import ABC, abstractmethod
 
 class LocalizeInterface(ABC):
