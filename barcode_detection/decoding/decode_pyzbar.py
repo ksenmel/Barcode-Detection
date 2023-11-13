@@ -1,6 +1,6 @@
-from decoding.decode import Decoder
+from barcode_detection.decoding.decode import Decoder
 from pyzbar.pyzbar import decode
-from utils import crop_img
+from barcode_detection.utils import crop_img
 import numpy as np
 
 

@@ -1,7 +1,7 @@
 import numpy as np
 import onnxruntime as ort
 
-from localization.onnx_yolov7.utils import create_letterbox
+from barcode_detection.localization.onnx_yolov7.utils import create_letterbox
 
 __all__ = ["OnnxDetector"]
 

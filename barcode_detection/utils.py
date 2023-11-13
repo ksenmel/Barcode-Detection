@@ -1,3 +1,5 @@
+from typing import List
+
 import cv2
 import os
 import numpy as np
@@ -14,9 +16,9 @@ def crop_img(input_img: np, rect: BoundingBox):
     return cropped_image
 
 
-def crop_helper(save_dir: str, input_dir: str, boundng_boxes):
-    for i in boundng_boxes:
-        cropped = crop_img(input_dir, boundng_boxes)
+def crop_helper(save_dir: str, input_dir: np, bounding_boxes: List[BoundingBox]):
+    for i in range(len(bounding_boxes)):
+        cropped = crop_img(input_dir, bounding_boxes[i])
         filename = f"img_{i}.jpg"
         filepath = os.path.join(save_dir, filename)
         cv2.imwrite(filepath, cropped)
