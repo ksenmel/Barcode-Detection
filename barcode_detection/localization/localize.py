@@ -1,7 +1,8 @@
 from abc import ABC, abstractmethod
+import numpy as np
 
 
 class Localizer(ABC):
     @abstractmethod
-    def localize(self, input_img: str, bounding_boxes):
+    def get_boundings(self, input_img: np):
         pass

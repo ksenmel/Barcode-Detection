@@ -7,12 +7,13 @@ from localization.onnx_yolov7 import OnnxDetector
 
 
 class LocalizeYolo(Localizer):
-    def yolov7_method(input_img: str, detector_path: str):
-        onnx_sticker_detector_path = detector_path
+
+    def get_boundings(self, input_img: np):
+        detector = "/Users/kseniia/Desktop/yolov7-stickers.onnx"
+        onnx_sticker_detector_path = detector
         sticker_detector = OnnxDetector(onnx_sticker_detector_path)
 
-        img = cv2.imread(input_img)
-        img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+        img = cv2.cvtColor(input_img, cv2.COLOR_BGR2RGB)
 
         stickers = sticker_detector(img)
 

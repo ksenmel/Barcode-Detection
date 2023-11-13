@@ -1,7 +1,8 @@
 from abc import ABC, abstractmethod
+import numpy as np
 
 
 class Decoder(ABC):
     @abstractmethod
-    def decode(self, input_img: str, bounding_boxes):
+    def decode(self, input_img: np, bounding_boxes):
         pass

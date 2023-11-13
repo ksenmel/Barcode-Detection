@@ -1,5 +1,6 @@
 import cv2
 import os
+import numpy as np
 from boundingbox.BoundingBox import BoundingBox
 
 
@@ -8,9 +9,8 @@ def read_img(input_dir: str):
     return img
 
 
-def crop_img(input_dir: str, rect: BoundingBox):
-    img = read_img(input_dir)
-    cropped_image = img[rect.y:rect.y + rect.height, rect.x:rect.x + rect.width]
+def crop_img(input_img: np, rect: BoundingBox):
+    cropped_image = input_img[rect.y:rect.y + rect.height, rect.x:rect.x + rect.width]
     return cropped_image
 
 
