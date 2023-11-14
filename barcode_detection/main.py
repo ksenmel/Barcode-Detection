@@ -2,7 +2,7 @@ from decoding.decode_pyzbar import DecodePyzbar
 from localization.localize_yolo import LocalizeYolo
 from utils import read_img
 
-img = read_img("dataset/PXL_20230826_081602262.jpg")
+img = read_img("PXL_20230826_081602262.jpg")
 
 decoder = DecodePyzbar()
 localizer = LocalizeYolo()
