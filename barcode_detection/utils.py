@@ -1,8 +1,7 @@
 import cv2
 import numpy as np
-import os
 
-from boundingbox.bounding_box import BoundingBox
+from barcode_detection.boundingbox.bounding_box import BoundingBox
 
 
 def read_img(input_dir: str):
@@ -10,7 +9,7 @@ def read_img(input_dir: str):
     return img
 
 
-def crop_img(input_img: np, rect: BoundingBox):
+def crop_img(input_img: np.ndarray, rect: BoundingBox):
     cropped_image = input_img[rect.y:rect.y + rect.height, rect.x:rect.x + rect.width]
     return cropped_image
 
