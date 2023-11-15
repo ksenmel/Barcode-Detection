@@ -8,8 +8,7 @@ from barcode_detection.utils import crop_img
 
 
 class DecodePyzbar(Decoder):
-
-    def decode(self, input_img: np.ndarray, bounding_boxes: list[BoundingBox]) :
+    def decode(self, input_img: np.ndarray, bounding_boxes: list[BoundingBox]):
         codes = []
         for box in bounding_boxes:
             cropped = crop_img(input_img, box)
