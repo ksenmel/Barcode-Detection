@@ -11,7 +11,7 @@ class LocalizeYolo(Localizer):
         self.detector_path = detector_path
         self.sticker_detector = OnnxDetector(self.detector_path)
 
-    def get_boundings(self, input_img: np.ndarray):
+    def get_boundings(self, input_img: np.ndarray) -> list[BoundingBox]:
         img = cv2.cvtColor(input_img, cv2.COLOR_BGR2RGB)
 
         stickers = self.sticker_detector(img)
