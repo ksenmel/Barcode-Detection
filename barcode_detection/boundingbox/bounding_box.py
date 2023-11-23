@@ -1,3 +1,4 @@
+# describes the bounding box coordinates
 class BoundingBox:
     def __init__(self, x: int, y: int, width: int, height: int):
         self.x = x

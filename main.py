@@ -1,7 +1,9 @@
 import argparse
 
 from barcode_detection.decoding.decode_pyzbar import DecodePyzbar
+from barcode_detection.decoding.zxing_method.decode_zxing import DecodeZxing
 from barcode_detection.localization.localize_yolo import LocalizeYolo
+from barcode_detection.localization.iyyun_method.localize_iyyun import LocalizeIyyun
 from barcode_detection.utils import read_img
 
 
@@ -12,20 +14,21 @@ def find_and_decode(
     if decode_option == "pyzbar":
         decoder = DecodePyzbar()
     elif decode_option == "zxing":
-        raise Exception("not yet implemented")
+        decoder = DecodeZxing()
     else:
         raise Exception("invalid decode option")
 
     if localize_option == "iyyun":
-        raise Exception("not yet implemented")
+        localizer = LocalizeIyyun()
     elif localize_option == "yolov7":
         localizer = LocalizeYolo(detector_path)
     else:
         raise Exception("invalid localize option")
 
     bounding_boxes = localizer.get_boundings(img)
+    decoded = decoder.decode(img, bounding_boxes)
 
-    print(decoder.decode(img, bounding_boxes))
+    print(decoded)
 
 
 if __name__ == "__main__":
