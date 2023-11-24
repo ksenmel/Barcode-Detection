@@ -31,7 +31,6 @@ RUN cd \
 
 WORKDIR /workspace 
 COPY main1.cpp main.cpp
-COPY tests tests
 
 RUN mkdir output
 RUN git clone  https://github.com/iyyun/Barcode_1D.git \
@@ -43,4 +42,4 @@ RUN git clone  https://github.com/iyyun/Barcode_1D.git \
     && cmake .. \
     && make
 
-CMD ["./Barcode_1D/src/Linux/tencon/build/iyBarcode", "--file=/workspace/tmp_for_img/img.png"]
+CMD ./Barcode_1D/src/Linux/tencon/build/iyBarcode --file=/workspace/tmp_for_img/img.png && cat /workspace/output/boundings.txt
