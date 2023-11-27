@@ -1,18 +1,14 @@
 import cv2
-import os
 import numpy as np
 
 from barcode_detection.boundingbox.bounding_box import BoundingBox
-
+from pathlib import Path
 
 def get_dir():
-    current_file = os.path.abspath(__file__)
-    components = current_file.split(os.path.sep)
-
-    barcode_detection_index = components.index("Barcode-Detection")
-    barcode_detection_path = os.path.sep.join(components[:barcode_detection_index + 1])
-
+    current_file = Path(__file__).resolve()
+    barcode_detection_path = current_file.parents[1]
     return barcode_detection_path
+
 
 
 def read_img(input_dir: str):
