@@ -17,12 +17,7 @@ class LocalizeIyyun(Localizer):
         file_path = Path(tmp_dir) / f"img.png"
         cv2.imwrite(str(file_path), input_img)
 
-        root_dir = get_dir()
-        docker_dir = Path(root_dir) / "barcode_detection/localization/iyyun_method/docker"
-
         client = docker.from_env()
-        client.images.build(path=str(docker_dir),
-                            tag="iyyun_docker")
         container = client.containers.run("iyyun_docker",
                                           volumes={tmp_dir: {'bind': '/workspace/tmp_for_img', 'mode': 'rw'}},
                                           detach=True)

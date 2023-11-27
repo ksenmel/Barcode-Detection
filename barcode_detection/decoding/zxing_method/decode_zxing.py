@@ -20,12 +20,7 @@ class DecodeZxing(Decoder):
 
             cv2.imwrite(str(file_path), cropped)
 
-        root_dir = get_dir()
-        docker_dir = Path(root_dir) / "barcode_detection/decoding/zxing_method/docker"
-
         client = docker.from_env()
-        client.images.build(path=str(docker_dir),
-                            tag="zxing_docker")
         container = client.containers.run("zxing_docker",
                                           volumes={tmp_dir: {'bind': '/workspace/tmp_for_img', 'mode': 'rw'}},
                                           detach=True)
