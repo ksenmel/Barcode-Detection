@@ -5,41 +5,40 @@ import tempfile
 
 from barcode_detection.boundingbox.bounding_box import BoundingBox
 from barcode_detection.decoding.decode import Decoder
-from barcode_detection.utils import crop_img, get_dir
+from barcode_detection.utils import crop_img
 from pathlib import Path
 
 
 class DecodeZxing(Decoder):
     def decode(self, input_img: np.ndarray, bounding_boxes: list[BoundingBox]):
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            path_to_img = Path(tmp_dir) / "img"
+            path_to_boxes = Path(tmp_dir) / "boxes"
 
-        tmp_dir = tempfile.mkdtemp()
+            path_to_img.mkdir()
+            path_to_boxes.mkdir()
 
-        for box in bounding_boxes:
-            cropped = crop_img(input_img, box)
-            file_path = Path(tmp_dir) / f"cropped_{box}.png"
+            for box in bounding_boxes:
+                cropped = crop_img(input_img, box)
+                file_path = path_to_img / f"cropped_{box}.png"
 
-            cv2.imwrite(str(file_path), cropped)
+                cv2.imwrite(str(file_path), cropped)
 
-        client = docker.from_env()
-        container = client.containers.run("zxing_docker",
-                                          volumes={tmp_dir: {'bind': '/workspace/tmp_for_img', 'mode': 'rw'}},
-                                          detach=True)
-        container.wait()
+            client = docker.from_env()
 
-        output = container.logs()
+            container = client.containers.run(
+                "zxing_docker",
+                volumes={
+                    path_to_img: {"bind": "/workspace/img"},
+                    path_to_boxes: {"bind": "/workspace/boxes"},
+                },
+                detach=True,
+            )
 
-        # delete tmp dir
-        tmp_path = Path(tmp_dir)
-        for file in tmp_path.iterdir():
-            if file.is_file():
-                file.unlink()
-            else:
-                file.rmdir()
-        tmp_path.rmdir()
+            container.wait()
+            container.remove()
 
-        container.remove()
+            with open(path_to_boxes / "decoded_barcodes.txt", "r") as file:
+                contents = file.read()
 
-        decoded_string = output.decode('utf-8')
-        output_list = eval(decoded_string)
-
-        return output_list
+            return contents

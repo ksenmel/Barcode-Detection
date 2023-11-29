@@ -1,31 +1,20 @@
-import os
 import zxing
 
+from pathlib import Path
 from PIL import Image
 
-path = "/workspace/tmp_for_img"
+if __name__ == "__main__":
+    img_folder = "/workspace/img"
+    folder_path = Path(img_folder)
+    output_file = "/workspace/boxes/decoded_barcodes.txt"
 
-def imgs(folder):
-    images = []
-    for filename in os.listdir(folder):
-        img = Image.open(os.path.join(folder, filename))
-        images.append(img)
-    return images
+    reader = zxing.BarCodeReader()
 
+    with open(output_file, "w") as file:
+        codes = []
+        for img in folder_path.iterdir():
+            if img.is_file():
+                barcode = reader.decode(str(img))
+                codes.append(str(barcode.raw))
 
-images = imgs(path)
-reader = zxing.BarCodeReader()
-
-
-def decode(cropped):
-    decoded = []
-
-    for img in cropped:
-        barcode = reader.decode(img)
-        decoded.append(barcode.raw)
-
-    return decoded
-
-
-decoded = decode(images)
-print(decoded)
+        file.write(", ".join(codes))
