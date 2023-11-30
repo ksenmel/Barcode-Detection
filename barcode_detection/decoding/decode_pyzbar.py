@@ -2,7 +2,7 @@ import numpy as np
 
 from pyzbar.pyzbar import decode
 
-from barcode_detection.boundingbox.bounding_box import BoundingBox
+from barcode_detection.core.bounding_box import BoundingBox
 from barcode_detection.decoding.decode import Decoder
 from barcode_detection.utils import crop_img
 

@@ -3,7 +3,7 @@ import docker
 import numpy as np
 import tempfile
 
-from barcode_detection.boundingbox.bounding_box import BoundingBox
+from barcode_detection.core.bounding_box import BoundingBox
 from barcode_detection.localization.localize import Localizer
 from pathlib import Path
 

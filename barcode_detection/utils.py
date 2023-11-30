@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 
-from barcode_detection.boundingbox.bounding_box import BoundingBox
+from barcode_detection.core.bounding_box import BoundingBox
 
 
 def read_img(input_dir: str):
