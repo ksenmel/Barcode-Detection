@@ -11,7 +11,6 @@ from pathlib import Path
 class LocalizeIyyun(Localizer):
     def get_boundings(self, input_img: np.ndarray) -> list[BoundingBox]:
         with tempfile.TemporaryDirectory() as tmp_dir:
-
             path_to_img = Path(tmp_dir) / "img"
             path_to_boxes = Path(tmp_dir) / "boxes"
 
@@ -25,8 +24,10 @@ class LocalizeIyyun(Localizer):
             client = docker.from_env()
             container = client.containers.run(
                 "iyyun_docker",
-                volumes={path_to_img: {"bind": "/workspace/img"},
-                         path_to_boxes: {"bind": "/workspace/boxes"}},
+                volumes={
+                    path_to_img: {"bind": "/workspace/img"},
+                    path_to_boxes: {"bind": "/workspace/boxes"},
+                },
                 detach=True,
             )
             container.wait()

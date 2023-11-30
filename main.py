@@ -1,8 +1,8 @@
 import argparse
 
-from barcode_detection.decoding.decode_pyzbar import DecodePyzbar
+from barcode_detection.decoding.pyzbar_method.decode_pyzbar import DecodePyzbar
 from barcode_detection.decoding.zxing_method.decode_zxing import DecodeZxing
-from barcode_detection.localization.localize_yolo import LocalizeYolo
+from barcode_detection.localization.onnx_yolov7.localize_yolo import LocalizeYolo
 from barcode_detection.localization.iyyun_method.localize_iyyun import LocalizeIyyun
 from barcode_detection.utils import read_img
 
@@ -36,7 +36,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "input_img",
         help="Path to the input image",
-        default="example/PXL_20230826_081602262.jpg",
+        default="example/image.jpg",
     )
     parser.add_argument("decode_option", help="Path to the decode option")
     parser.add_argument("localize_option", help="Path to the localize option")
