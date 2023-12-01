@@ -16,14 +16,14 @@ def find_and_decode(
     elif decode_option == "zxing":
         decoder = DecodeZxing()
     else:
-        raise Exception("invalid decode option")
+        raise Exception("invalid decoding option")
 
     if localize_option == "iyyun":
         localizer = LocalizeIyyun()
     elif localize_option == "yolov7":
         localizer = LocalizeYolo(detector_path)
     else:
-        raise Exception("invalid localize option")
+        raise Exception("invalid localization option")
 
     bounding_boxes = localizer.get_boundings(img)
     decoded = decoder.decode(img, bounding_boxes)

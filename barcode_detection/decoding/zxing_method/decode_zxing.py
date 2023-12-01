@@ -39,6 +39,12 @@ class DecodeZxing(Decoder):
             container.remove()
 
             with open(path_to_boxes / "decoded_barcodes.txt", "r") as file:
-                contents = file.read()
+                lines = file.readlines()
 
-            return contents
+            codes = []
+
+            values = [line.strip() for line in lines]
+            for code in values:
+                codes.append(code)
+
+            return codes

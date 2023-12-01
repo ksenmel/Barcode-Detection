@@ -17,4 +17,4 @@ if __name__ == "__main__":
                 barcode = reader.decode(str(img))
                 codes.append(str(barcode.raw))
 
-        file.write(", ".join(codes))
+        file.write("\n".join(codes))
