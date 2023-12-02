@@ -9,6 +9,9 @@ from pathlib import Path
 
 
 class LocalizeIyyun(Localizer):
+    def __init__(self, client):
+        self.client = client
+
     def get_boundings(self, input_img: np.ndarray) -> list[BoundingBox]:
         with tempfile.TemporaryDirectory() as tmp_dir:
             path_to_img = Path(tmp_dir) / "img"
@@ -21,8 +24,7 @@ class LocalizeIyyun(Localizer):
 
             cv2.imwrite(str(file_path), input_img)
 
-            client = docker.from_env()
-            container = client.containers.run(
+            container = self.client.containers.run(
                 "iyyun_docker",
                 volumes={
                     path_to_img: {"bind": "/workspace/img"},

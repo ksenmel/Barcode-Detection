@@ -10,6 +10,9 @@ from pathlib import Path
 
 
 class DecodePyzbar(Decoder):
+    def __init__(self, client):
+        self.client = client
+
     def decode(self, input_img: np.ndarray, bounding_boxes: list[BoundingBox]):
         with tempfile.TemporaryDirectory() as tmp_dir:
             path_to_img = Path(tmp_dir) / "img"
@@ -24,9 +27,7 @@ class DecodePyzbar(Decoder):
 
                 cv2.imwrite(str(file_path), cropped)
 
-            client = docker.from_env()
-
-            container = client.containers.run(
+            container = self.client.containers.run(
                 "pyzbar_docker",
                 volumes={
                     path_to_img: {"bind": "/workspace/img"},

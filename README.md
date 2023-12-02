@@ -28,10 +28,16 @@ $ docker build -t iyyun_docker .
 $ cd Barcode-Detection/barcode_detection/decoding/zxing_method/docker
 $ docker build -t zxing_docker .
 ```
+#### how to build pyzbar with docker
+```
+$ cd Barcode-Detection/barcode_detection/decoding/pyzbar_method/docker
+$ docker build -t pyzbar_docker .
+```
 
 
 ## Demo
 ```
 $ cd Barcode-Detection
 $ python3 main.py example/image.jpg pyzbar iyyun
+$ python3 main.py example/image.jpg zxing yolov7 --detector_path /path/to/weights
 ```

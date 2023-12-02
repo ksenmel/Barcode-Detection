@@ -10,6 +10,9 @@ from pathlib import Path
 
 
 class DecodeZxing(Decoder):
+    def __init__(self, client):
+        self.client = client
+
     def decode(self, input_img: np.ndarray, bounding_boxes: list[BoundingBox]):
         with tempfile.TemporaryDirectory() as tmp_dir:
             path_to_img = Path(tmp_dir) / "img"

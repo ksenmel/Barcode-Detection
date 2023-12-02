@@ -1,4 +1,5 @@
 import argparse
+import docker
 
 from barcode_detection.decoding.pyzbar_method.decode_pyzbar import DecodePyzbar
 from barcode_detection.decoding.zxing_method.decode_zxing import DecodeZxing
@@ -11,15 +12,17 @@ def find_and_decode(
     input_img: str, decode_option: str, localize_option: str, detector_path: str
 ):
     img = read_img(input_img)
+    client = docker.from_env()
+
     if decode_option == "pyzbar":
-        decoder = DecodePyzbar()
+        decoder = DecodePyzbar(client)
     elif decode_option == "zxing":
-        decoder = DecodeZxing()
+        decoder = DecodeZxing(client)
     else:
         raise Exception("invalid decoding option")
 
     if localize_option == "iyyun":
-        localizer = LocalizeIyyun()
+        localizer = LocalizeIyyun(client)
     elif localize_option == "yolov7":
         localizer = LocalizeYolo(detector_path)
     else:
