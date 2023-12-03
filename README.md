@@ -15,7 +15,7 @@ To use 'iyyun', 'zxing' and 'pyzbar' methods, you need to first run Docker and b
 ```
 $ git clone https://github.com/ksenmel/Barcode-Detection
 ```
-If you're a MacOS user, run this command as well:
+If you are a MacOS user, you must have Docker Desktop pre-installed. Run this command as well:
 ```
 $ open -a Docker
 ```
