@@ -1,12 +1,12 @@
 import cv2
-import docker
 import numpy as np
 import tempfile
+
+from pathlib import Path
 
 from barcode_detection.core.bounding_box import BoundingBox
 from barcode_detection.decoding.decode import Decoder
 from barcode_detection.utils import crop_img
-from pathlib import Path
 
 
 class DecodePyzbar(Decoder):
@@ -16,10 +16,10 @@ class DecodePyzbar(Decoder):
     def decode(self, input_img: np.ndarray, bounding_boxes: list[BoundingBox]):
         with tempfile.TemporaryDirectory() as tmp_dir:
             path_to_img = Path(tmp_dir) / "img"
-            path_to_boxes = Path(tmp_dir) / "boxes"
+            path_to_barcodes = Path(tmp_dir) / "boxes"
 
             path_to_img.mkdir()
-            path_to_boxes.mkdir()
+            path_to_barcodes.mkdir()
 
             for box in bounding_boxes:
                 cropped = crop_img(input_img, box)
@@ -31,7 +31,7 @@ class DecodePyzbar(Decoder):
                 "pyzbar_docker",
                 volumes={
                     path_to_img: {"bind": "/workspace/img"},
-                    path_to_boxes: {"bind": "/workspace/boxes"},
+                    path_to_barcodes: {"bind": "/workspace/barcodes"},
                 },
                 detach=True,
             )
@@ -39,14 +39,10 @@ class DecodePyzbar(Decoder):
             container.wait()
             container.remove()
 
-            with open(path_to_boxes / "decoded_barcodes.txt", "r") as file:
+            with open(path_to_barcodes / "decoded_barcodes.txt", "r") as file:
                 lines = file.readlines()
 
-            codes = []
-
-            values = [line.strip() for line in lines]
-            for code in values:
-                codes.append(code)
+            codes = [line.strip() for line in lines]
 
             return codes
 

@@ -1,5 +1,4 @@
 import cv2
-import docker
 import numpy as np
 import tempfile
 

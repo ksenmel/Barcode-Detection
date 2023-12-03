@@ -11,12 +11,13 @@
 - [zxing](https://github.com/zxing/zxing)
 
 ## Build Instructions
-To use 'iyyun' and 'zxing' methods, you need to first run Docker and build Docker images as in the instructions below  
-```
-$ open -a Docker
-```
+To use 'iyyun', 'zxing' and 'pyzbar' methods, you need to first run Docker and build Docker images as in the instructions below
 ```
 $ git clone https://github.com/ksenmel/Barcode-Detection
+```
+If you're a MacOS user, run this command as well:
+```
+$ open -a Docker
 ```
 #### how to build iyyun with docker
 ```
@@ -41,3 +42,5 @@ $ cd Barcode-Detection
 $ python3 main.py example/image.jpg pyzbar iyyun
 $ python3 main.py example/image.jpg zxing yolov7 --detector_path /path/to/weights
 ```
+
+You can download weights for 'yolov7' [here](https://drive.google.com/file/d/1yD_N2mRRvbNobSP-VDsfDY_mW2MmTS3l/view?usp=sharing)

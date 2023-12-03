@@ -1,12 +1,12 @@
 import cv2
-import docker
 import numpy as np
 import tempfile
+
+from pathlib import Path
 
 from barcode_detection.core.bounding_box import BoundingBox
 from barcode_detection.decoding.decode import Decoder
 from barcode_detection.utils import crop_img
-from pathlib import Path
 
 
 class DecodeZxing(Decoder):
@@ -27,9 +27,7 @@ class DecodeZxing(Decoder):
 
                 cv2.imwrite(str(file_path), cropped)
 
-            client = docker.from_env()
-
-            container = client.containers.run(
+            container = self.client.containers.run(
                 "zxing_docker",
                 volumes={
                     path_to_img: {"bind": "/workspace/img"},

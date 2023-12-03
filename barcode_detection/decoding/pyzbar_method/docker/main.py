@@ -1,11 +1,12 @@
 import cv2
-from pyzbar.pyzbar import decode
+
 from pathlib import Path
+from pyzbar.pyzbar import decode
 
 if __name__ == "__main__":
     img_folder = "/workspace/img"
     folder_path = Path(img_folder)
-    output_file = "/workspace/boxes/decoded_barcodes.txt"
+    output_file = "/workspace/barcodes/decoded_barcodes.txt"
 
     with open(output_file, "w") as file:
         codes = []
