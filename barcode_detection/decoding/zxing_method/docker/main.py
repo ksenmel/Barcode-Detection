@@ -6,7 +6,7 @@ from PIL import Image
 if __name__ == "__main__":
     img_folder = "/workspace/img"
     folder_path = Path(img_folder)
-    output_file = "/workspace/boxes/decoded_barcodes.txt"
+    output_file = "/workspace/barcodes/decoded_barcodes.txt"
 
     reader = zxing.BarCodeReader()
 

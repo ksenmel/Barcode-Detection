@@ -10,13 +10,20 @@ from barcode_detection.utils import crop_img
 
 
 class DecodePyzbar(Decoder):
+    IMG_DIR = "img"
+    BARCODES_DIR = "barcodes"
+    DOCKER_IMAGE_NAME = "pyzbar_docker"
+    DOCKER_IMG_BIND_PATH = "/workspace/img"
+    DOCKER_BARCODES_BIND_PATH = "/workspace/barcodes"
+    DECODED_BARCODES_FILE = "decoded_barcodes.txt"
+
     def __init__(self, client):
         self.client = client
 
     def decode(self, input_img: np.ndarray, bounding_boxes: list[BoundingBox]):
         with tempfile.TemporaryDirectory() as tmp_dir:
-            path_to_img = Path(tmp_dir) / "img"
-            path_to_barcodes = Path(tmp_dir) / "boxes"
+            path_to_img = Path(tmp_dir) / self.IMG_DIR
+            path_to_barcodes = Path(tmp_dir) / self.BARCODES_DIR
 
             path_to_img.mkdir()
             path_to_barcodes.mkdir()
@@ -28,10 +35,10 @@ class DecodePyzbar(Decoder):
                 cv2.imwrite(str(file_path), cropped)
 
             container = self.client.containers.run(
-                "pyzbar_docker",
+                self.DOCKER_IMAGE_NAME,
                 volumes={
-                    path_to_img: {"bind": "/workspace/img"},
-                    path_to_barcodes: {"bind": "/workspace/barcodes"},
+                    path_to_img: {"bind": self.DOCKER_IMG_BIND_PATH},
+                    path_to_barcodes: {"bind": self.DOCKER_BARCODES_BIND_PATH},
                 },
                 detach=True,
             )
@@ -39,7 +46,7 @@ class DecodePyzbar(Decoder):
             container.wait()
             container.remove()
 
-            with open(path_to_barcodes / "decoded_barcodes.txt", "r") as file:
+            with open(path_to_barcodes / self.DECODED_BARCODES_FILE, "r") as file:
                 lines = file.readlines()
 
             codes = [line.strip() for line in lines]

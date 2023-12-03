@@ -8,33 +8,40 @@ from pathlib import Path
 
 
 class LocalizeIyyun(Localizer):
+    IMG_DIR = "img"
+    BOUNDINGS_DIR = "boxes"
+    DOCKER_IMAGE_NAME = "iyyun_docker"
+    DOCKER_IMG_BIND_PATH = "/workspace/img"
+    DOCKER_BOUNDINGS_BIND_PATH = "/workspace/boxes"
+    IMG_FILE_NAME = "img.png"
+    BOUNDINGS_FILE_NAME = "boundings.txt"
     def __init__(self, client):
         self.client = client
 
     def get_boundings(self, input_img: np.ndarray) -> list[BoundingBox]:
         with tempfile.TemporaryDirectory() as tmp_dir:
-            path_to_img = Path(tmp_dir) / "img"
-            path_to_boxes = Path(tmp_dir) / "boxes"
+            path_to_img = Path(tmp_dir) / self.IMG_DIR
+            path_to_boxes = Path(tmp_dir) / self.BOUNDINGS_DIR
 
             path_to_img.mkdir()
             path_to_boxes.mkdir()
 
-            file_path = path_to_img / f"img.png"
+            file_path = path_to_img / self.IMG_FILE_NAME
 
             cv2.imwrite(str(file_path), input_img)
 
             container = self.client.containers.run(
-                "iyyun_docker",
+                self.DOCKER_IMAGE_NAME,
                 volumes={
-                    path_to_img: {"bind": "/workspace/img"},
-                    path_to_boxes: {"bind": "/workspace/boxes"},
+                    path_to_img: {"bind": self.DOCKER_IMG_BIND_PATH},
+                    path_to_boxes: {"bind": self.DOCKER_BOUNDINGS_BIND_PATH},
                 },
                 detach=True,
             )
             container.wait()
             container.remove()
 
-            with open(path_to_boxes / "boundings.txt", "r") as file:
+            with open(path_to_boxes / self.BOUNDINGS_FILE_NAME, "r") as file:
                 contents = file.read()
                 lines = contents.splitlines()
 
@@ -44,7 +51,6 @@ class LocalizeIyyun(Localizer):
 
                 bounding_boxes = []
                 for value in values:
-                    # iyyun method returns x, y, width, height coordinates
                     bounding_box = BoundingBox(
                         int(value[0]), int(value[1]), int(value[2]), int(value[3])
                     )
