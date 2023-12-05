@@ -21,7 +21,6 @@ class LocalizeYolo(Localizer):
         for box in stickers["bboxes"]:
             box = box.round().astype(np.int32).tolist()
 
-            # x, y, width, height
             bounding_box = BoundingBox(box[0], box[1], box[2] - box[0], box[3] - box[1])
             bounding_boxes.append(bounding_box)
 

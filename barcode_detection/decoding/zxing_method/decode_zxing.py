@@ -36,10 +36,10 @@ class DecodeZxing(Decoder):
                 cv2.imwrite(str(file_path), cropped)
 
             container = self.client.containers.run(
-                self.DOCKER_IMAGE_NAME ,
+                self.DOCKER_IMAGE_NAME,
                 volumes={
-                    path_to_img: {"bind": self.DOCKER_IMG_BIND_PATH },
-                    path_to_boxes: {"bind": self. DOCKER_BARCODES_BIND_PATH},
+                    path_to_img: {"bind": self.DOCKER_IMG_BIND_PATH},
+                    path_to_boxes: {"bind": self.DOCKER_BARCODES_BIND_PATH},
                 },
                 detach=True,
             )

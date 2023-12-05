@@ -52,4 +52,3 @@ class DecodePyzbar(Decoder):
             codes = [line.strip() for line in lines]
 
             return codes
-

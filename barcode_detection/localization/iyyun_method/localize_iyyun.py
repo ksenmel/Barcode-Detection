@@ -15,6 +15,7 @@ class LocalizeIyyun(Localizer):
     DOCKER_BOUNDINGS_BIND_PATH = "/workspace/boxes"
     IMG_FILE_NAME = "img.png"
     BOUNDINGS_FILE_NAME = "boundings.txt"
+
     def __init__(self, client):
         self.client = client
 
@@ -52,7 +53,12 @@ class LocalizeIyyun(Localizer):
                 bounding_boxes = []
                 for value in values:
                     bounding_box = BoundingBox(
-                        int(value[0]), int(value[1]), int(value[2]), int(value[3])
+                        # this method returns left corner 'x', 'y' coordinates and
+                        # width and height of the bounding box
+                        int(value[0]),
+                        int(value[1]),
+                        int(value[2]),
+                        int(value[3]),
                     )
                     bounding_boxes.append(bounding_box)
 

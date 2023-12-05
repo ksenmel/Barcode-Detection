@@ -10,7 +10,5 @@ def read_img(input_dir: str):
 
 
 def crop_img(input_img: np.ndarray, rect: BoundingBox):
-    cropped_image = input_img[
-        rect.y1 : rect.y1 + rect.y2, rect.x1 : rect.x1 + rect.x2
-    ]
+    cropped_image = input_img[rect.y1 : rect.y1 + rect.y2, rect.x1 : rect.x1 + rect.x2]
     return cropped_image
