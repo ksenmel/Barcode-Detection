@@ -2,7 +2,7 @@ import numpy as np
 
 from abc import ABC, abstractmethod
 
-from barcode_detection.boundingbox.bounding_box import BoundingBox
+from barcode_detection.core.bounding_box import BoundingBox
 
 
 class Decoder(ABC):
