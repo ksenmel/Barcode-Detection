@@ -37,4 +37,4 @@ RUN git clone  https://github.com/iyyun/Barcode_1D.git \
     && cmake .. \
     && make
 
-CMD ./Barcode_1D/src/Linux/tencon/build/iyBarcode --file=/workspace/img/img.png
+CMD ["sh", "-c", "for file in /workspace/imgs/*; do ./Barcode_1D/src/Linux/tencon/build/iyBarcode --file=\"$file\"; done"]
