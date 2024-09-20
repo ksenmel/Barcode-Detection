@@ -24,8 +24,9 @@ RUN wget https://github.com/opencv/opencv_contrib/archive/3.2.0.zip \
     && cd ../.. \
     && rm 3.2.0.zip
 
-WORKDIR /workspace 
+WORKDIR /workspace
 COPY main.cpp main.cpp
+COPY imgs imgs
 
 RUN mkdir output
 RUN git clone  https://github.com/iyyun/Barcode_1D.git \
