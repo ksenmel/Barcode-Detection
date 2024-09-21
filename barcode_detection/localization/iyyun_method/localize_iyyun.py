@@ -18,17 +18,17 @@ class LocalizeIyyun(Localizer):
         self.client = client
 
     def get_boundings(self, input_dir: str):
-
-        imgs = Path('barcode_detection/localization/iyyun_method/docker/' + self.IMGS_DIR).resolve()
+        imgs = Path(
+            "barcode_detection/localization/iyyun_method/docker/" + self.IMGS_DIR
+        ).resolve()
         imgs.mkdir()
 
         # have to copy all images because of building dockers previously
-        for file in Path(input_dir).glob('*.jpg'):
+        for file in Path(input_dir).glob("*.jpg"):
             shutil.copy(file, imgs)
 
         # tmp dir to make paths for docker binding
         with tempfile.TemporaryDirectory() as tmp_dir:
-
             bounding_boxes = Path(tmp_dir) / self.BOUNDING_BOXES_DIR
             bounding_boxes.mkdir()
 
@@ -45,8 +45,9 @@ class LocalizeIyyun(Localizer):
 
             shutil.rmtree(imgs)
 
-            bounding_boxes_path = Path("barcode_detection/localization/iyyun_method/"
-                                       + self.BOUNDING_BOXES_DIR).resolve()
+            bounding_boxes_path = Path(
+                "barcode_detection/localization/iyyun_method/" + self.BOUNDING_BOXES_DIR
+            ).resolve()
 
-            for file in bounding_boxes.glob('*.txt'):
+            for file in bounding_boxes.glob("*.txt"):
                 shutil.copy(file, bounding_boxes_path)
