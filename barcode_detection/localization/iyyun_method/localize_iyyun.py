@@ -1,4 +1,3 @@
-import os
 import tempfile
 import shutil
 
@@ -21,7 +20,9 @@ class LocalizeIyyun(Localizer):
     def get_boundings(self, input_dir: str):
 
         imgs = Path('barcode_detection/localization/iyyun_method/docker/' + self.IMGS_DIR).resolve()
+        imgs.mkdir()
 
+        # have to copy all images because of building dockers previously
         for file in Path(input_dir).glob('*.jpg'):
             shutil.copy(file, imgs)
 
@@ -42,9 +43,10 @@ class LocalizeIyyun(Localizer):
             container.wait()
             container.remove()
 
-            path = Path("barcode_detection/localization/iyyun_method/" + self.BOUNDING_BOXES_DIR).resolve()
+            shutil.rmtree(imgs)
+
+            bounding_boxes_path = Path("barcode_detection/localization/iyyun_method/"
+                                       + self.BOUNDING_BOXES_DIR).resolve()
 
             for file in bounding_boxes.glob('*.txt'):
-                shutil.copy(file, path)
-
-            # need to remove volumes as well (docker volume rm <volume_name>)
+                shutil.copy(file, bounding_boxes_path)
