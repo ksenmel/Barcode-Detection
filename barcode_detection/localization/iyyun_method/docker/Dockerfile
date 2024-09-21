@@ -24,8 +24,9 @@ RUN wget https://github.com/opencv/opencv_contrib/archive/3.2.0.zip \
     && cd ../.. \
     && rm 3.2.0.zip
 
-WORKDIR /workspace 
+WORKDIR /workspace
 COPY main.cpp main.cpp
+COPY imgs imgs
 
 RUN mkdir output
 RUN git clone  https://github.com/iyyun/Barcode_1D.git \
@@ -37,4 +38,4 @@ RUN git clone  https://github.com/iyyun/Barcode_1D.git \
     && cmake .. \
     && make
 
-CMD ./Barcode_1D/src/Linux/tencon/build/iyBarcode --file=/workspace/img/img.png
+CMD ["sh", "-c", "for file in /workspace/imgs/*; do ./Barcode_1D/src/Linux/tencon/build/iyBarcode --file=\"$file\"; done"]

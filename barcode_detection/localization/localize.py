@@ -1,11 +1,12 @@
-import numpy as np
-
 from abc import ABC, abstractmethod
-
-from barcode_detection.core.bounding_box import BoundingBox
 
 
 class Localizer(ABC):
+    """
+    Class for Barcode Localization Algorithms
+    `get_boundings` method takes a directory that contains deblurred video frames as an input.
+    """
+
     @abstractmethod
-    def get_boundings(self, input_img: np.ndarray) -> list[BoundingBox]:
+    def get_boundings(self, input_dir: str):
         pass

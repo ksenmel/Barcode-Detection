@@ -3,6 +3,7 @@
 #include <iostream>
 #include <cstdio>
 #include <fstream>
+#include <vector>
 
 #include "gallo/gallo.h"
 #include "soros/soros.h"
@@ -25,6 +26,11 @@ int main(int argc, char* argv[])
 
 	std::string fn = cmd.get<std::string>("file");
 
+	std::string base_name = fn.substr(fn.find_last_of("/") + 1);
+    base_name = base_name.substr(0, base_name.find_last_of('.'));
+    std::string output_filename = "/workspace/bounding_boxes/" + base_name + ".txt";
+
+
 	iy::Gallo mGallo;
 	iy::Soros mSoros;
 	iy::Yun mYun;
@@ -43,21 +49,20 @@ int main(int argc, char* argv[])
 	cv::rectangle(frame, g_rt, cvScalar(0, 255, 0), 2);
 
 	cv::Rect s_rt = mSoros.process(frame_gray, 20);
-	cv::rectangle(frame, s_rt, cvScalar(255,0,0), 2);
+	cv::rectangle(frame, s_rt, cvScalar(255, 0, 0), 2);
 
 	std::vector<iy::YunCandidate> list_barcode = mYun.process(frame_gray);
 
-	std::ofstream output_file("/workspace/boxes/boundings.txt");
+	std::ofstream output_file(output_filename.c_str());
 
 	if (!list_barcode.empty())
 	{
-
 		if (!output_file.is_open()) {
   			std::cerr << "Failed to open file" << std::endl;
   			return -1;
 		}
 
-		for (std::vector<iy::YunCandidate>::iterator it = list_barcode.begin(); it < list_barcode.end(); it++)
+		for (std::vector<iy::YunCandidate>::iterator it = list_barcode.begin(); it != list_barcode.end(); ++it)
 		{
 			if (it->isBarcode)
 			{
@@ -65,17 +70,13 @@ int main(int argc, char* argv[])
 				cv::rectangle(frame, y_rt, cvScalar(0, 255, 255), 2);
 
 				output_file << y_rt.x << ", "
-                 << y_rt.y << ", "
-                 << y_rt.width << ", "
-                 << y_rt.height << std::endl;
-
+                             << y_rt.y << ", "
+                             << y_rt.width << ", "
+                             << y_rt.height << std::endl;
 			}
 		}
-
-		list_barcode.clear();
 	}
 
 	output_file.close();
-
 	return 0;
 }
