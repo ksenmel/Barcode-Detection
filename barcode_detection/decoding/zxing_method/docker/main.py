@@ -4,17 +4,23 @@ from pathlib import Path
 from PIL import Image
 
 if __name__ == "__main__":
-    img_folder = "/workspace/img"
-    folder_path = Path(img_folder)
-    output_file = "/workspace/barcodes/decoded_barcodes.txt"
+    images = Path("/workspace/images")
+    barcodes = Path("/workspace/barcodes/decoded_barcodes.txt")
+
+    barcodes_unique = {}
 
     reader = zxing.BarCodeReader()
 
-    with open(output_file, "w") as file:
-        codes = []
-        for img in folder_path.iterdir():
-            if img.is_file():
-                barcode = reader.decode(str(img))
-                codes.append(str(barcode.raw))
+    with open(barcodes, "w") as file:
+        for image in images.iterdir():
+            if image.is_file():
+                barcode = reader.decode(str(image))
+                value = barcode.raw
 
-        file.write("\n".join(codes))
+                if value:
+                    if value in barcodes_unique:
+                        barcodes_unique[value] += 1
+                    else:
+                        barcodes_unique[value] = 1
+
+                    file.write(f"{value}\n")
