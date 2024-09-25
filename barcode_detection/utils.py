@@ -32,7 +32,9 @@ def crop_image(save_dir: str, images_dir: str, bounding_boxes_path: str):
 
                     cropped = crop(image, bbox)
 
-                    filename = f"{line}.jpg"
+                    s = line.replace(" ", "").replace(",", "")
+                    filename = f"{i}_{s}.jpg"
+
                     filepath = os.path.join(save_dir, filename)
                     cv2.imwrite(filepath, cropped)
 
