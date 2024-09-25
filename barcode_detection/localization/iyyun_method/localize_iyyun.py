@@ -23,6 +23,15 @@ class LocalizeIyyun(Localizer):
         ).resolve()
         imgs.mkdir()
 
+        bounding_boxes_path = Path(
+            "barcode_detection/localization/iyyun_method/" + self.BOUNDING_BOXES_DIR
+        ).resolve()
+
+        if bounding_boxes_path.is_dir():
+            shutil.rmtree(bounding_boxes_path)
+
+        bounding_boxes_path.mkdir()
+
         # have to copy all images because of building dockers previously
         for file in Path(input_dir).glob("*.jpg"):
             shutil.copy(file, imgs)
@@ -44,10 +53,6 @@ class LocalizeIyyun(Localizer):
             container.remove()
 
             shutil.rmtree(imgs)
-
-            bounding_boxes_path = Path(
-                "barcode_detection/localization/iyyun_method/" + self.BOUNDING_BOXES_DIR
-            ).resolve()
 
             for file in bounding_boxes.glob("*.txt"):
                 shutil.copy(file, bounding_boxes_path)

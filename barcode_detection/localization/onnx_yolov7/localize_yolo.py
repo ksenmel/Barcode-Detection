@@ -1,11 +1,11 @@
 import cv2
 import numpy as np
-
-from pathlib import Path
+import shutil
 
 from barcode_detection.core.bounding_box import BoundingBox
 from barcode_detection.localization.localize import Localizer
 from barcode_detection.localization.onnx_yolov7 import OnnxDetector
+from pathlib import Path
 
 
 class LocalizeYolo(Localizer):
@@ -14,17 +14,20 @@ class LocalizeYolo(Localizer):
         self.sticker_detector = OnnxDetector(self.detector_path)
 
     def get_boundings(self, input_dir: str):
+
         deblurred_frames_path_dir = Path(input_dir)
+
         bounding_boxes_dir = Path(
             "barcode_detection/localization/onnx_yolov7/bounding_boxes"
         )
 
-        bounding_boxes_dir.mkdir(exist_ok=True)
-        files = deblurred_frames_path_dir.glob("*.jpg")
-        # https://stackoverflow.com/questions/42246819/loop-over-results-from-path-glob-pathlib
+        if bounding_boxes_dir.is_dir():
+            shutil.rmtree(bounding_boxes_dir)
+
+        bounding_boxes_dir.mkdir()
 
         # should rewrite here every N step
-        for file in files:
+        for file in deblurred_frames_path_dir.glob("*.jpg"):
             filename = file.name.split(".")[0]
             output_file_path = bounding_boxes_dir / f"{filename}.txt"
 
@@ -49,5 +52,3 @@ class LocalizeYolo(Localizer):
                         f"{box[0]},{box[1]},{box[2] - box[0]},{box[3] - box[1]}\n"
                     )
                     f.write(bounding_box_line)
-
-            print(f"Saved bounding boxes for {file.name} to {output_file_path}")
