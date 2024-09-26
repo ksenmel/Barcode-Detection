@@ -30,9 +30,7 @@ def find_barcode(images: str, detector: str, localize_option: str):
 
 
 # return decoded barcodes
-def decode_barcode(
-        images: str, bounding_boxes: str, decode_option: str
-):
+def decode_barcode(images: str, bounding_boxes: str, decode_option: str):
     client = docker.from_env()
 
     if decode_option == "pyzbar":
@@ -48,17 +46,21 @@ def decode_barcode(
 
 
 # full pipeline
-def deblur_find_decode(video: str, localize_option: str, decode_option: str, detector: str):
-
+def deblur_find_decode(
+    video: str, localize_option: str, decode_option: str, detector: str
+):
     images = deblur_and_frame(video=video)
 
-    bounding_boxes = find_barcode(images=images, detector=detector, localize_option=localize_option)
+    bounding_boxes = find_barcode(
+        images=images, detector=detector, localize_option=localize_option
+    )
 
-    return decode_barcode(images=images, bounding_boxes=bounding_boxes, decode_option=decode_option)
+    return decode_barcode(
+        images=images, bounding_boxes=bounding_boxes, decode_option=decode_option
+    )
 
 
 if __name__ == "__main__":
-
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "video",
@@ -66,13 +68,11 @@ if __name__ == "__main__":
         default="example/video.mp4",
     )
     parser.add_argument("decode_option", help="Path to the decode option")
-    parser.add_argument("localize_option", help="Method of barcode localization (iyyun or yolov7)")
     parser.add_argument(
-        "--detector", help="Path to the detector model", required=False
+        "localize_option", help="Method of barcode localization (iyyun or yolov7)"
     )
-    parser.add_argument(
-        "step", help="Step for video processing", required=False
-    )
+    parser.add_argument("--detector", help="Path to the detector model", required=False)
+    parser.add_argument("step", help="Step for video processing", required=False)
 
     args = parser.parse_args()
 
