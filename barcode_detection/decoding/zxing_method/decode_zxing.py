@@ -20,10 +20,8 @@ class DecodeZxing(Decoder):
         self.client = client
 
     def decode(self, images_dir: str, bounding_boxes_dir: str):
-
         # tmp dir to make paths for docker binding
         with tempfile.TemporaryDirectory() as tmp_dir:
-
             images = Path(tmp_dir) / self.IMGS_DIR
             images.mkdir()
 
@@ -31,7 +29,11 @@ class DecodeZxing(Decoder):
             barcodes.mkdir()
 
             # crop image by its bounding box
-            crop_image(save_dir=str(images), images_dir=images_dir, bounding_boxes_path=bounding_boxes_dir)
+            crop_image(
+                save_dir=str(images),
+                images_dir=images_dir,
+                bounding_boxes_path=bounding_boxes_dir,
+            )
 
             container = self.client.containers.run(
                 self.DOCKER_IMAGE_NAME,

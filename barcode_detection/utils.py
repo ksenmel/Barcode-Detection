@@ -7,7 +7,7 @@ from barcode_detection.core.bounding_box import BoundingBox
 
 def crop(image: np.ndarray, rect: BoundingBox):
     if rect is not None:
-        cropped = image[rect.y1: rect.y1 + rect.y2, rect.x1: rect.x1 + rect.x2]
+        cropped = image[rect.y1 : rect.y1 + rect.y2, rect.x1 : rect.x1 + rect.x2]
         return cropped
     else:
         return None
@@ -18,11 +18,13 @@ def crop_image(save_dir: str, images_dir: str, bounding_boxes_path: str):
     bounding_boxes = os.listdir(bounding_boxes_path)
 
     if len(images) != len(bounding_boxes):
-        raise ValueError("Number of bounding boxes files is not equal to number of images.")
+        raise ValueError(
+            "Number of bounding boxes files is not equal to number of images."
+        )
 
     for i in range(len(images)):
-        image = cv2.imread(images_dir + '/' + images[i])
-        with open(bounding_boxes_path + '/' + bounding_boxes[i], "r") as f:
+        image = cv2.imread(images_dir + "/" + images[i])
+        with open(bounding_boxes_path + "/" + bounding_boxes[i], "r") as f:
             for line in f:
                 line = line.strip()
                 coordinates = [int(num) for num in line.split(",")]
@@ -40,4 +42,5 @@ def crop_image(save_dir: str, images_dir: str, bounding_boxes_path: str):
 
                 else:
                     raise ValueError(
-                        f"Found an error in line: {line}. Four integers expected, instead got {len(coordinates)}.")
+                        f"Found an error in line: {line}. Four integers expected, instead got {len(coordinates)}."
+                    )

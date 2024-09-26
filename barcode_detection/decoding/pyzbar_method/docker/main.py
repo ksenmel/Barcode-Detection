@@ -25,5 +25,3 @@ if __name__ == "__main__":
                             barcodes_unique[value] = 1
 
                         file.write(f"{value}\n")
-
-

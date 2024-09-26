@@ -14,22 +14,20 @@ class LocalizeYolo(Localizer):
         self.sticker_detector = OnnxDetector(self.detector_path)
 
     def get_boundings(self, input_dir: str):
+        deblurred_frames = Path(input_dir)
 
-        deblurred_frames_path_dir = Path(input_dir)
-
-        bounding_boxes_dir = Path(
+        bounding_boxes = Path(
             "barcode_detection/localization/onnx_yolov7/bounding_boxes"
         )
 
-        if bounding_boxes_dir.is_dir():
-            shutil.rmtree(bounding_boxes_dir)
+        if bounding_boxes.is_dir():
+            shutil.rmtree(bounding_boxes)
 
-        bounding_boxes_dir.mkdir()
+        bounding_boxes.mkdir()
 
-        # should rewrite here every N step
-        for file in deblurred_frames_path_dir.glob("*.jpg"):
+        for file in deblurred_frames.glob("*.jpg"):
             filename = file.name.split(".")[0]
-            output_file_path = bounding_boxes_dir / f"{filename}.txt"
+            output_file_path = bounding_boxes / f"{filename}.txt"
 
             img = cv2.imread(f"{file}")
 
@@ -37,7 +35,7 @@ class LocalizeYolo(Localizer):
 
             stickers = self.sticker_detector(img)
 
-            bounding_boxes = []
+            boxes = []
 
             with open(output_file_path, "w") as f:
                 for box in stickers["bboxes"]:
@@ -46,9 +44,9 @@ class LocalizeYolo(Localizer):
                     bounding_box = BoundingBox(
                         box[0], box[1], box[2] - box[0], box[3] - box[1]
                     )
-                    bounding_boxes.append(bounding_box)
+                    boxes.append(bounding_box)
 
-                    bounding_box_line = (
-                        f"{box[0]},{box[1]},{box[2] - box[0]},{box[3] - box[1]}\n"
-                    )
-                    f.write(bounding_box_line)
+                    line = f"{box[0]},{box[1]},{box[2] - box[0]},{box[3] - box[1]}\n"
+                    f.write(line)
+
+        return bounding_boxes
