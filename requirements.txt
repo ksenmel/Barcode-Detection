@@ -1,5 +1,5 @@
-numpy=1.26.4
+numpy==1.26.4
 onnxruntime==1.16.1
 opencv-contrib-python==4.8.0.74
 opencv-python==4.7.0.72
-docker=7.0.0
+docker==7.0.0
