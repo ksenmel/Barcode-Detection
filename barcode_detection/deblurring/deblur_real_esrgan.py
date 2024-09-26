@@ -15,17 +15,12 @@ class DeblurRealEsrgan(Deblurrer):
         tmp_frames_path = Path("barcode_detection/deblurring/real_esrgan/tmp_frames")
         out_frames_path = Path("barcode_detection/deblurring/real_esrgan/out_frames")
 
-        # fix empty directory issue
-        # maybe add try..except
-        if tmp_frames_path.is_dir():
-            tmp_frames_path.rmdir()
-        else:
-            tmp_frames_path.mkdir()
+        tmp_frames_path.mkdir()
 
         if out_frames_path.is_dir():
             out_frames_path.rmdir()
-        else:
-            out_frames_path.mkdir()
+
+        out_frames_path.mkdir()
 
         video_path.rename(working_dir + "/" + video_name)
 
@@ -40,5 +35,8 @@ class DeblurRealEsrgan(Deblurrer):
         )
 
         os.chdir(owd)  # back to initial working dir
+        tmp_frames_path.rmdir()
 
         # need to place video back to dir we took it from or rewrite code here
+
+        return out_frames_path

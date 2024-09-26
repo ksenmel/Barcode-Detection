@@ -8,5 +8,5 @@ class Localizer(ABC):
     """
 
     @abstractmethod
-    def get_boundings(self, input_dir: str):
+    def get_boundings(self, images: str):
         pass
